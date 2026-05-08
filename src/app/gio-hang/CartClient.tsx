@@ -2,7 +2,6 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { Trash2, Minus, Plus, ShoppingBag, ArrowLeft } from 'lucide-react'
 import { useCartStore } from '@/lib/cart-store'
 import { formatPrice } from '@/lib/data'
 
@@ -15,121 +14,121 @@ export default function CartClient() {
 
   if (count === 0) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-16 text-center">
-        <ShoppingBag size={80} className="mx-auto text-gray-200 mb-4" />
-        <h2 className="text-xl font-semibold text-gray-600 mb-2">Giỏ hàng của bạn đang trống</h2>
-        <p className="text-gray-400 mb-6">Hãy thêm sản phẩm vào giỏ hàng để tiếp tục mua sắm</p>
+      <div className="mx-auto px-4 py-16 text-center" style={{ maxWidth: '1200px' }}>
+        <span className="material-symbols-outlined block mx-auto mb-4" style={{ fontSize: '80px', color: '#eeeeee' }}>
+          shopping_cart
+        </span>
+        <h2 className="font-semibold mb-2" style={{ fontSize: '24px', color: '#5f5e5e' }}>
+          Giỏ hàng của bạn đang trống
+        </h2>
+        <p className="mb-6" style={{ fontSize: '14px', color: '#5b403b' }}>
+          Hãy thêm sản phẩm vào giỏ hàng để tiếp tục mua sắm
+        </p>
         <Link
           href="/san-pham"
-          className="inline-flex items-center gap-2 bg-red-500 text-white px-8 py-3 rounded hover:bg-red-600 transition-colors"
+          className="inline-flex items-center gap-2 text-white px-8 py-3 rounded transition-colors active:scale-95"
+          style={{ backgroundColor: '#b22204', fontSize: '18px' }}
         >
-          <ShoppingBag size={18} /> Mua Sắm Ngay
+          <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>shopping_bag</span>
+          Mua Sắm Ngay
         </Link>
       </div>
     )
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-4">
-      {/* Header */}
-      <div className="flex items-center gap-3 mb-4">
-        <Link href="/san-pham" className="text-gray-500 hover:text-red-500 flex items-center gap-1 text-sm">
-          <ArrowLeft size={16} /> Tiếp tục mua sắm
-        </Link>
-        <h1 className="text-lg font-semibold text-gray-800">
-          Giỏ Hàng ({count} sản phẩm)
-        </h1>
-      </div>
+    <div className="mx-auto px-4 py-4 mb-24 md:mb-0" style={{ maxWidth: '1200px' }}>
+      <h1 className="font-semibold mb-4" style={{ fontSize: '24px', color: '#1a1c1c' }}>
+        Giỏ Hàng
+      </h1>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div className="flex flex-col lg:flex-row gap-3">
         {/* Cart items */}
-        <div className="lg:col-span-2 space-y-3">
-          {/* Select all */}
-          <div className="bg-white rounded-sm px-4 py-3 flex items-center gap-3 border-b">
-            <input type="checkbox" defaultChecked className="accent-red-500 w-4 h-4" />
-            <span className="text-sm font-medium text-gray-700">Chọn Tất Cả ({count})</span>
-            <button className="ml-auto text-sm text-gray-500 hover:text-red-500 flex items-center gap-1">
-              <Trash2 size={14} /> Xóa
-            </button>
+        <div className="flex-1 flex flex-col gap-3">
+          {/* Table header (desktop) */}
+          <div
+            className="hidden md:flex items-center px-4 py-3 rounded shadow-sm"
+            style={{ backgroundColor: '#ffffff', fontSize: '12px', color: '#5b403b', boxShadow: '0px 2px 12px rgba(0,0,0,0.05)' }}
+          >
+            <div className="flex items-center gap-3 w-2/5">
+              <input type="checkbox" defaultChecked style={{ accentColor: '#b22204', width: '16px', height: '16px' }} />
+              <span>Sản Phẩm</span>
+            </div>
+            <div className="w-1/5 text-center">Đơn Giá</div>
+            <div className="w-1/5 text-center">Số Lượng</div>
+            <div className="w-1/5 text-center">Số Tiền</div>
+            <div className="w-12 text-center">Xóa</div>
           </div>
 
           {items.map((item) => (
-            <div key={`${item.product.id}-${item.selectedSize}-${item.selectedColor}`}
-              className="bg-white rounded-sm p-4"
+            <div
+              key={`${item.product.id}-${item.selectedSize}-${item.selectedColor}`}
+              className="rounded shadow-sm p-4"
+              style={{ backgroundColor: '#ffffff', boxShadow: '0px 2px 12px rgba(0,0,0,0.05)' }}
             >
-              <div className="flex gap-3">
-                <input type="checkbox" defaultChecked className="accent-red-500 w-4 h-4 mt-1 flex-shrink-0" />
-                <div className="relative w-20 h-20 flex-shrink-0 bg-gray-100 rounded overflow-hidden">
-                  <Image
-                    src={item.product.images[0]}
-                    alt={item.product.name}
-                    fill
-                    className="object-cover"
-                    sizes="80px"
-                  />
+              <div className="flex items-start gap-3">
+                <input type="checkbox" defaultChecked style={{ accentColor: '#b22204', width: '16px', height: '16px', marginTop: '4px', flexShrink: 0 }} />
+                <div className="relative flex-shrink-0 rounded overflow-hidden" style={{ width: '80px', height: '80px', backgroundColor: '#f3f3f3' }}>
+                  <Image src={item.product.images[0]} alt={item.product.name} fill className="object-cover" sizes="80px" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <Link
                     href={`/san-pham/${item.product.slug}`}
-                    className="text-sm text-gray-800 hover:text-red-500 line-clamp-2 mb-1 block"
+                    className="line-clamp-2 block mb-1 hover:opacity-70 transition-colors"
+                    style={{ fontSize: '14px', color: '#1a1c1c', lineHeight: '1.5' }}
                   >
                     {item.product.name}
                   </Link>
-                  <div className="flex gap-3 text-xs text-gray-500 mb-2">
+                  <div className="flex gap-3 mb-2" style={{ fontSize: '12px', color: '#5f5e5e' }}>
                     <span>Size: {item.selectedSize}</span>
                     <span>Màu: {item.selectedColor}</span>
                   </div>
+
                   <div className="flex items-center justify-between flex-wrap gap-2">
                     <div className="flex items-center gap-2">
-                      <span className="text-red-500 font-semibold text-sm">
+                      <span className="font-bold" style={{ fontSize: '20px', lineHeight: 1, color: '#b22204' }}>
                         {formatPrice(item.product.price)}
                       </span>
                       {item.product.originalPrice > item.product.price && (
-                        <span className="text-gray-400 text-xs line-through">
+                        <span className="line-through" style={{ fontSize: '12px', color: '#5f5e5e' }}>
                           {formatPrice(item.product.originalPrice)}
                         </span>
                       )}
                     </div>
-                    <div className="flex items-center gap-2">
-                      <div className="flex items-center border rounded overflow-hidden">
+
+                    <div className="flex items-center gap-3">
+                      {/* Quantity control */}
+                      <div className="flex items-center border rounded overflow-hidden" style={{ borderColor: '#e3beb6' }}>
                         <button
-                          onClick={() =>
-                            updateQuantity(
-                              item.product.id,
-                              item.selectedSize,
-                              item.selectedColor,
-                              item.quantity - 1
-                            )
-                          }
-                          className="w-7 h-7 flex items-center justify-center hover:bg-gray-100 text-gray-600"
-                          aria-label="Giảm"
+                          onClick={() => updateQuantity(item.product.id, item.selectedSize, item.selectedColor, item.quantity - 1)}
+                          className="w-8 h-8 flex items-center justify-center transition-colors hover:opacity-70"
+                          style={{ color: '#1a1c1c' }}
                         >
-                          <Minus size={12} />
+                          <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>remove</span>
                         </button>
-                        <span className="w-8 text-center text-sm">{item.quantity}</span>
+                        <span className="w-9 text-center" style={{ fontSize: '14px', fontWeight: 600 }}>{item.quantity}</span>
                         <button
-                          onClick={() =>
-                            updateQuantity(
-                              item.product.id,
-                              item.selectedSize,
-                              item.selectedColor,
-                              item.quantity + 1
-                            )
-                          }
-                          className="w-7 h-7 flex items-center justify-center hover:bg-gray-100 text-gray-600"
-                          aria-label="Tăng"
+                          onClick={() => updateQuantity(item.product.id, item.selectedSize, item.selectedColor, item.quantity + 1)}
+                          className="w-8 h-8 flex items-center justify-center transition-colors hover:opacity-70"
+                          style={{ color: '#1a1c1c' }}
                         >
-                          <Plus size={12} />
+                          <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>add</span>
                         </button>
                       </div>
+
+                      {/* Total */}
+                      <span className="hidden md:block font-bold" style={{ fontSize: '14px', color: '#b22204', minWidth: '80px', textAlign: 'right' }}>
+                        {formatPrice(item.product.price * item.quantity)}
+                      </span>
+
+                      {/* Delete */}
                       <button
-                        onClick={() =>
-                          removeItem(item.product.id, item.selectedSize, item.selectedColor)
-                        }
-                        className="text-gray-400 hover:text-red-500 transition-colors"
+                        onClick={() => removeItem(item.product.id, item.selectedSize, item.selectedColor)}
+                        className="transition-colors hover:opacity-70"
+                        style={{ color: '#8f7069' }}
                         aria-label="Xóa sản phẩm"
                       >
-                        <Trash2 size={16} />
+                        <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>delete</span>
                       </button>
                     </div>
                   </div>
@@ -140,69 +139,86 @@ export default function CartClient() {
         </div>
 
         {/* Order summary */}
-        <div className="space-y-3">
+        <div className="w-full lg:w-72 flex flex-col gap-3 flex-shrink-0">
           {/* Voucher */}
-          <div className="bg-white rounded-sm p-4">
-            <h3 className="text-sm font-semibold text-gray-800 mb-3">Mã Giảm Giá</h3>
+          <div className="rounded shadow-sm p-4" style={{ backgroundColor: '#ffffff', boxShadow: '0px 2px 12px rgba(0,0,0,0.05)' }}>
+            <h3 className="font-semibold mb-3" style={{ fontSize: '18px', color: '#1a1c1c' }}>Mã Giảm Giá</h3>
             <div className="flex gap-2">
               <input
                 type="text"
                 placeholder="Nhập mã voucher..."
-                className="flex-1 border rounded px-3 py-2 text-sm focus:outline-none focus:border-red-400"
+                className="flex-1 border rounded px-3 py-2 outline-none focus:border-primary"
+                style={{ fontSize: '14px', borderColor: '#e3beb6', color: '#1a1c1c' }}
               />
-              <button className="px-4 py-2 bg-red-500 text-white text-sm rounded hover:bg-red-600 transition-colors">
+              <button
+                className="px-4 py-2 text-white rounded transition-colors hover:opacity-90 active:scale-95"
+                style={{ backgroundColor: '#b22204', fontSize: '14px' }}
+              >
                 Áp dụng
               </button>
             </div>
           </div>
 
-          {/* Summary */}
-          <div className="bg-white rounded-sm p-4 sticky top-24">
-            <h3 className="text-sm font-semibold text-gray-800 mb-4">Tóm Tắt Đơn Hàng</h3>
-            <div className="space-y-3 text-sm">
-              <div className="flex justify-between text-gray-600">
-                <span>Tạm tính ({count} sản phẩm)</span>
+          {/* Summary (sticky) */}
+          <div className="rounded shadow-sm p-4 sticky top-24" style={{ backgroundColor: '#ffffff', boxShadow: '0px 2px 12px rgba(0,0,0,0.05)' }}>
+            <h3 className="font-semibold mb-4" style={{ fontSize: '18px', color: '#1a1c1c' }}>Tóm Tắt Đơn Hàng</h3>
+            <div className="space-y-3" style={{ fontSize: '14px' }}>
+              <div className="flex justify-between" style={{ color: '#5f5e5e' }}>
+                <span>Tạm tính ({count})</span>
                 <span>{formatPrice(total)}</span>
               </div>
-              <div className="flex justify-between text-gray-600">
+              <div className="flex justify-between" style={{ color: '#5f5e5e' }}>
                 <span>Phí vận chuyển</span>
-                {shipping === 0 ? (
-                  <span className="text-green-500">Miễn phí</span>
-                ) : (
-                  <span>{formatPrice(shipping)}</span>
-                )}
+                {shipping === 0
+                  ? <span style={{ color: '#22c55e' }}>Miễn phí</span>
+                  : <span>{formatPrice(shipping)}</span>}
               </div>
               {total < 150000 && (
-                <p className="text-xs text-gray-400">
-                  Mua thêm {formatPrice(150000 - total)} để được miễn phí ship
+                <p style={{ fontSize: '12px', color: '#5b403b' }}>
+                  Mua thêm {formatPrice(150000 - total)} để miễn phí ship
                 </p>
               )}
-              <div className="flex justify-between text-gray-600">
-                <span>Giảm giá voucher</span>
-                <span className="text-green-500">-{formatPrice(0)}</span>
+              <div className="flex justify-between" style={{ color: '#5f5e5e' }}>
+                <span>Giảm giá</span>
+                <span style={{ color: '#22c55e' }}>-{formatPrice(0)}</span>
               </div>
-              <div className="border-t pt-3 flex justify-between font-semibold text-base">
-                <span>Tổng cộng</span>
-                <span style={{ color: '#ee4d2d' }}>{formatPrice(finalTotal)}</span>
+              <div className="border-t pt-3 flex justify-between font-bold" style={{ borderColor: '#e8e8e8', fontSize: '18px' }}>
+                <span style={{ color: '#1a1c1c' }}>Tổng cộng</span>
+                <span style={{ color: '#b22204' }}>{formatPrice(finalTotal)}</span>
               </div>
-              <p className="text-xs text-gray-400">(Đã bao gồm VAT nếu có)</p>
+              <p style={{ fontSize: '11px', color: '#5f5e5e' }}>(Đã bao gồm VAT nếu có)</p>
             </div>
 
-            <button className="w-full mt-4 py-3 text-white font-semibold rounded transition-colors hover:opacity-90"
-              style={{ backgroundColor: '#ee4d2d' }}
+            <button
+              className="w-full mt-4 py-3 text-white font-semibold rounded transition-colors hover:opacity-90 active:scale-95"
+              style={{ backgroundColor: '#b22204', fontSize: '18px' }}
             >
               Đặt Hàng ({count})
             </button>
 
-            <div className="mt-4 grid grid-cols-3 gap-2">
-              {['VISA', 'MoMo', 'VNPay'].map((method) => (
-                <div key={method} className="border rounded text-center py-1 text-xs text-gray-500">
-                  {method}
+            <div className="mt-3 grid grid-cols-3 gap-2">
+              {['VISA', 'MoMo', 'VNPay'].map((m) => (
+                <div key={m} className="border rounded text-center py-1" style={{ borderColor: '#e3beb6', fontSize: '12px', color: '#5f5e5e' }}>
+                  {m}
                 </div>
               ))}
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Mobile fixed bottom bar */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t p-3 z-50 flex items-center justify-between" style={{ borderColor: '#e3beb6' }}>
+        <div>
+          <span style={{ fontSize: '12px', color: '#5f5e5e' }}>Tổng tiền:</span>
+          <span className="font-bold block" style={{ fontSize: '20px', color: '#b22204' }}>{formatPrice(finalTotal)}</span>
+        </div>
+        <button
+          className="text-white px-8 py-3 rounded font-semibold active:scale-95"
+          style={{ backgroundColor: '#b22204', fontSize: '18px' }}
+        >
+          Đặt Hàng ({count})
+        </button>
       </div>
     </div>
   )
